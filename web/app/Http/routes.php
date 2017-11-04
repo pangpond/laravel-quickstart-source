@@ -38,7 +38,7 @@ Route::group(['middleware' => ['web']], function () {
                 ->withErrors($validator);
         }
 
-        if($reserveWord->isContainsReserveWord($request->name)){
+        if ($reserveWord->isContainsReserveWord($request->name)) {
             return redirect('/');
         }
 
@@ -56,5 +56,17 @@ Route::group(['middleware' => ['web']], function () {
         Task::findOrFail($id)->delete();
 
         return redirect('/');
+    });
+
+    Route::get('/task/delall', function () {
+
+        $tasks = Task::all();
+        foreach ($tasks as $task) {
+            $task->delete();
+        }
+
+        return response()->json([
+            'success' => true
+        ]);
     });
 });
